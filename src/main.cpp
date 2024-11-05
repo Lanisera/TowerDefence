@@ -1,3 +1,4 @@
+#define SDL_MAIN_HANDLED
 #include <SDL_events.h>
 #include <SDL_pixels.h>
 #include <SDL_rect.h>
@@ -5,7 +6,6 @@
 #include <SDL_stdinc.h>
 #include <SDL_timer.h>
 #include <SDL_video.h>
-#define SDL_MAIN_HANDLED
 
 #include <iostream>
 #include <SDL.h>
@@ -14,8 +14,16 @@
 #include <SDL_image.h>
 #include <SDL2_gfxPrimitives.h>
 #include <cjson/cJSON.h>
+#include <manager/game_manager.h>
 
-int main()
+void test();
+
+int main(int argc, char **argv)
+{
+	return GameManager::instance()->run(argc, argv);
+}
+
+void test() 
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
@@ -91,6 +99,4 @@ int main()
 		filledCircleRGBA(render, point.x, point.y, 50, 255, 0, 0, 125);
 		SDL_RenderPresent(render);
 	}
-
-	return 0;
 }
