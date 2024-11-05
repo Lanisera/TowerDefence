@@ -28,6 +28,7 @@ target_include_directories(td PUBLIC
 	${SDL2_mixer_INCLUDE_DIRS}
 	${SDL2_gfx_INCLUDE_DIRS}
 	${cJSON_INCLUDE_DIRS}
+	./include
 )
 
 target_link_libraries(td
