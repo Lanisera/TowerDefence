@@ -14,6 +14,7 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(SDL2_mixer REQUIRED)
+find_package(cJSON REQUIRED)
 
 set(SOURCE_DIR src)
 file(GLOB SOURCES "${SOURCE_DIR}/*.cpp")
@@ -26,6 +27,7 @@ target_include_directories(td PUBLIC
 	${SDL2_ttf_INCLUDE_DIRS}
 	${SDL2_mixer_INCLUDE_DIRS}
 	${SDL2_gfx_INCLUDE_DIRS}
+	${cJSON_INCLUDE_DIRS}
 )
 
 target_link_libraries(td
@@ -34,5 +36,6 @@ target_link_libraries(td
 	SDL2_image::SDL2_image
 	SDL2_mixer::SDL2_mixer
 	${SDL2_gfx_LIBRARIES}
+	${CJSON_LIBRARIES}
 )
 

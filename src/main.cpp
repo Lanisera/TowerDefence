@@ -13,6 +13,7 @@
 #include <SDL_mixer.h>
 #include <SDL_image.h>
 #include <SDL2_gfxPrimitives.h>
+#include <cjson/cJSON.h>
 
 int main()
 {
