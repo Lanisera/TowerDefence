@@ -1,16 +1,21 @@
 #pragma once
 
-#include "tile.h"
-
 #include <SDL.h>
 #include <SDL_rect.h>
 #include <stdexcept>
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <unordered_map>
+
+#include <map/tile.h>
+#include <map/route.h>
 
 class Map
 {
+public:
+	using SpawnerRoutePool = std::unordered_map<int, Route>;
+
 public:
 	Map() = default;
 	~Map() = default;
@@ -73,6 +78,7 @@ public:
 private:
 	TileMap tile_map;
 	SDL_Point idx_home {0};
+	SpawnerRoutePool spawner_route_pool;
 
 private:
 	std::string trim_str(const std::string& str)
@@ -115,8 +121,8 @@ private:
 
 	void generate_map_cache()
 	{
-		for (size_t y = 0; y < get_height(); y++)
-			for (size_t x = 0; x < get_width(); x++)
+		for (int y = 0; y < get_height(); y++)
+			for (int x = 0; x < get_width(); x++)
 			{
 				const Tile& tile = tile_map[y][x];
 				if (tile.special_flag < 0)
@@ -126,6 +132,10 @@ private:
 				{
 					idx_home.x = x;
 					idx_home.y = y;
+				}
+				else
+				{
+					spawner_route_pool[tile.special_flag] = Route(tile_map, {x, y});
 				}
 			}
 	}

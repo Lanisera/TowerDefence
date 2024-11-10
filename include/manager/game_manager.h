@@ -5,8 +5,6 @@
 #include <SDL_messagebox.h>
 #include <SDL_mixer.h>
 #include <SDL_render.h>
-#include "manager.h"
-
 #include <SDL.h>
 #include <SDL_timer.h>
 #include <SDL_ttf.h>
@@ -14,6 +12,8 @@
 #include <SDL2_gfxPrimitives.h>
 #include <SDL_video.h>
 #include <cjson/cJSON.h>
+
+#include <manager/manager.h>
 
 class GameManager: public Manager<GameManager>
 {
