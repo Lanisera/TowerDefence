@@ -58,6 +58,25 @@ size_t Map::get_width()
 	return tile_map.empty() ? 0 : tile_map[0].size();
 }
 
+const TileMap& Map::get_tile_map() const
+{
+	return tile_map;	
+}
+
+const SDL_Point& Map::get_idx_home() const
+{
+	return idx_home;
+}
+
+const Map::SpawnerRoutePool& Map::get_spawner_route_pool() const
+{
+	return spawner_route_pool;
+}
+
+void Map::place_tower(const SDL_Point& idx_tile)
+{
+	tile_map[idx_tile.y][idx_tile.x].has_tower = true;
+}
 
 /// help function ///
 std::string Map::trim_str(const std::string& str)

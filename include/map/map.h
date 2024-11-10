@@ -23,6 +23,14 @@ public:
 
 	size_t get_width();
 
+	const TileMap& get_tile_map() const;
+
+	const SDL_Point& get_idx_home() const;
+
+	const SpawnerRoutePool& get_spawner_route_pool() const;
+
+	void place_tower(const SDL_Point& idx_tile);
+
 private:
 	TileMap tile_map;
 	SDL_Point idx_home {0};
