@@ -17,11 +17,12 @@ public:
 	Map() = default;
 	~Map() = default;
 
+	// 地图用csv文件定义，按照csv格式读取地图
 	bool load(const std::string& path);
 
-	size_t get_height();
+	size_t get_height() const;
 
-	size_t get_width();
+	size_t get_width() const;
 
 	const TileMap& get_tile_map() const;
 

@@ -100,14 +100,19 @@ public:
 	using TexturePool = std::unordered_map<ResID, SDL_Texture*>;
 
 public:
+	// 加载游戏基本资源: 音乐， 音效，图片，字体
 	bool load_resources_from_file(SDL_Renderer* renderer);
 
+	// 获得字体资源池，管理所有的字体
 	const FontPool& get_font_pool() const;
 
+	// 获得音乐资源池，管理所有的音乐
 	const MusicPool& get_music_pool() const;
 
+	// 获得音效资源池，管理所有的音效
 	const SoundPool& get_sound_pool() const;
 	
+	// 获得图片(纹理--GPU渲染)资源池，管理所有的图片(纹理--GPU渲染)资
 	const TexturePool& get_texture_pool() const;
 
 protected:

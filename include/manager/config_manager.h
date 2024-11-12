@@ -82,8 +82,10 @@ public:
 	const double num_coin_prop = 10;
 
 public:
+	// 加载关卡配置信息(波次信息 -- level.json)
 	bool load_level_config(const std::string& path);
 
+	// 加载玩家以及敌人相关数据 -- config.json
 	bool load_game_config(const std::string& path);
 
 protected:

@@ -32,9 +32,10 @@ private:
 	SDL_Event event;
 	bool is_quit = false;
 
-
 	SDL_Window *window = nullptr;
-	SDL_Renderer *render = nullptr; 
+	SDL_Renderer *renderer = nullptr; 
+
+	SDL_Texture* tex_tile_map = nullptr;
 
 private:
 	void init_assert(bool flag, const char* err_msg);
@@ -44,4 +45,6 @@ private:
 	void on_update(double delta);
 
 	void on_render();
+
+	bool generate_tile_map_texture();
 };

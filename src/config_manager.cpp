@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 bool ConfigManager::load_level_config(const std::string& path)
 {
@@ -95,16 +96,17 @@ bool ConfigManager::load_game_config(const std::string& path)
 	file.close();
 
 	cJSON* json_root = cJSON_Parse(str_stream.str().c_str());
-	if (!json_root || json_root->type != cJSON_Array)
+	if (!json_root || json_root->type != cJSON_Object)
 	{
+		// std::cerr << "Root_Object Error" << std::endl;
 		cJSON_Delete(json_root);
 		return false;
 	}
 
 	cJSON* json_basic = cJSON_GetObjectItem(json_root, "basic");
-	cJSON* json_player = cJSON_GetObjectItem(json_player, "player");
-	cJSON* json_tower = cJSON_GetObjectItem(json_tower, "tower");
-	cJSON* json_enemy = cJSON_GetObjectItem(json_enemy, "enemy");
+	cJSON* json_player = cJSON_GetObjectItem(json_root, "player");
+	cJSON* json_tower = cJSON_GetObjectItem(json_root, "tower");
+	cJSON* json_enemy = cJSON_GetObjectItem(json_root, "enemy");
 
 	if (!json_basic || !json_player || !json_tower || !json_enemy
 			|| json_basic->type != cJSON_Object

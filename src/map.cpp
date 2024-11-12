@@ -48,12 +48,12 @@ bool Map::load(const std::string& path)
 }
 
 
-size_t Map::get_height()
+size_t Map::get_height() const
 {
 	return tile_map.size();
 }
 
-size_t Map::get_width()
+size_t Map::get_width() const
 {
 	return tile_map.empty() ? 0 : tile_map[0].size();
 }
