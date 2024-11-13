@@ -32,7 +32,7 @@ public:
 
 	void set_route(const Route* route);
 
-	void make_valid();
+	void make_invalid();
 
 	double get_hp() const;
 
