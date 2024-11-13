@@ -137,9 +137,9 @@ void Enemy::set_route(const Route* route)
 	this->route = route;
 }
 
-void Enemy::make_valid()
+void Enemy::make_invalid()
 {
-	is_valid = true;
+	is_valid = false;
 }
 
 double Enemy::get_hp() const
