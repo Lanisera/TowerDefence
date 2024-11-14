@@ -31,9 +31,6 @@ void Enemy::on_update(double delta)
 	Vector2 target_distance = position_target - position;
 	position += move_distance < target_distance ? move_distance : target_distance;
 
-	// if (name != "Slim" && name != "KingSlim")
-		// std::cerr << name << ": move_distance: " << move_distance.length() << ", target_distance: " << target_distance.length() << ", x: " << position.x << ", y: " << position.y << ", t_x: " << position_target.x << ", t_y: " << position_target.y << std::endl;
-
 	if ((position_target - position).approx_zero())
 	{
 		idx_target++;
@@ -41,17 +38,12 @@ void Enemy::on_update(double delta)
 
 		direction = (position_target - position).normalize();
 
-		// if (name != "Slim" && name != "KingSlim")
-		//	std::cerr << name << ": d_x: " << direction.x << ", d_y: " << direction.y << std::endl;
 	}
 
 	velocity = direction * speed * SIZE_TILE;
 
 	bool is_show_x_anim = abs(direction.x) > abs(direction.y);
 	
-	// if (name != "Slim" && name != "KingSlim")
-	// 	std::cerr << name << ": d_x: " << direction.x << ", d_y: " << direction.y << std::endl;
-
 	if (is_show_sketch)
 	{
 		if (is_show_x_anim)

@@ -67,14 +67,11 @@ WaveManager::WaveManager()
 	spawn_event_timer.set_one_shot(true);
 	spawn_event_timer.set_on_timeout([&]() 
 			{
-				// std::cerr << idx_spawn_event << std::endl;
 				const std::vector<Wave::SpawnEvent>& spawn_event_list = wave_list[idx_wave].spawn_event_list;
 				const Wave::SpawnEvent& spawn_event = spawn_event_list[idx_spawn_event];
 
 				// generate enemy
-				// std::cerr << "spawn enemy enter" << std::endl;
 				EnemyManager::instance()->spawn_enemy(spawn_event.type, spawn_event.spawn_point);
-				// std::cerr << "exit" << std::endl;
 				
 				// prepare for next wave
 				idx_spawn_event++;

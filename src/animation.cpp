@@ -2,6 +2,7 @@
 #include <SDL_render.h>
 #include <animation/animation.h>
 #include <vector>
+#include <iostream>
 
 Animation::Animation()
 {
