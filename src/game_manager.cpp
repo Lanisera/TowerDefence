@@ -1,3 +1,5 @@
+#include "manager/enemy_manager.h"
+#include "manager/wave_manager.h"
 #include "map/tile.h"
 #include <SDL_blendmode.h>
 #include <SDL_pixels.h>
@@ -100,6 +102,18 @@ void GameManager::on_input()
 
 void GameManager::on_update(double delta)
 {
+	static ConfigManager* config_instance = ConfigManager::instance();
+
+	if (!config_instance->is_game_over)
+	{
+		// std::cerr << "wave update started" << std::endl;
+		WaveManager::instance()->on_update(delta);
+		// std::cerr << "wave update finished" << std::endl;
+
+		// std::cerr << "enemy update started" << std::endl;
+		EnemyManager::instance()->on_update(delta);
+		// std::cerr << "enemy update finished" << std::endl;
+	}
 
 }
 
@@ -108,6 +122,10 @@ void GameManager::on_render()
 	static ConfigManager* config = ConfigManager::instance();
 	static SDL_Rect& rect_dst = config->rect_tile_map;
 	SDL_RenderCopy(renderer, tex_tile_map, nullptr, &rect_dst);
+
+	// std::cerr << "enemy renderer started" << std::endl;
+	EnemyManager::instance()->on_render(renderer);
+	// std::cerr << "enemy renderer finished" << std::endl;
 
 	SDL_RenderPresent(renderer);
 }

@@ -17,36 +17,36 @@ public:
 		static SDL_Texture* skeleton_sketch_texture = texture_pool.find(ResID::Tex_SkeletonSketch)->second;
 		static ConfigManager::EnemyTemplate& skeleton_template = ConfigManager::instance()->skeleton_template;
 
-		const std::vector<int> idx_down = {0, 1, 2, 3, 4, 5};
-		const std::vector<int> idx_up = {6, 7, 8, 9, 10, 11};
-		const std::vector<int> idx_right = {12, 13, 14, 15, 16, 17};
-		const std::vector<int> idx_left = {18, 19, 20, 21, 22, 23};
+		const std::vector<int> idx_down = {0, 1, 2, 3, 4};
+		const std::vector<int> idx_up = {5, 6, 7, 8, 9};
+		const std::vector<int> idx_right = {10, 11, 12, 13, 14};
+		const std::vector<int> idx_left = {15, 16, 17, 18, 19};
 
 		anim_up.set_loop(true);
 		anim_up.set_interval(0.1);
-		anim_up.set_frame_date(skeleton_texture, 6, 4, idx_up);
+		anim_up.set_frame_date(skeleton_texture, 5, 4, idx_up);
 		anim_down.set_loop(true);
 		anim_down.set_interval(0.1);
-		anim_down.set_frame_date(skeleton_texture, 6, 4, idx_down);
+		anim_down.set_frame_date(skeleton_texture, 5, 4, idx_down);
 		anim_left.set_loop(true);
 		anim_left.set_interval(0.1);
-		anim_left.set_frame_date(skeleton_texture, 6, 4, idx_left);
+		anim_left.set_frame_date(skeleton_texture, 5, 4, idx_left);
 		anim_right.set_loop(true);
 		anim_right.set_interval(0.1);
-		anim_right.set_frame_date(skeleton_texture, 6, 4, idx_right);
+		anim_right.set_frame_date(skeleton_texture, 5, 4, idx_right);
 
-		anim_up.set_loop(true);
-		anim_up.set_interval(0.1);
-		anim_up.set_frame_date(skeleton_sketch_texture, 6, 4, idx_up);
-		anim_down.set_loop(true);
-		anim_down.set_interval(0.1);
-		anim_down.set_frame_date(skeleton_sketch_texture, 6, 4, idx_down);
-		anim_left.set_loop(true);
-		anim_left.set_interval(0.1);
-		anim_left.set_frame_date(skeleton_sketch_texture, 6, 4, idx_left);
-		anim_right.set_loop(true);
-		anim_right.set_interval(0.1);
-		anim_right.set_frame_date(skeleton_sketch_texture, 6, 4, idx_right);
+		anim_sketch_up.set_loop(true);
+		anim_sketch_up.set_interval(0.1);
+		anim_sketch_up.set_frame_date(skeleton_sketch_texture, 5, 4, idx_up);
+		anim_sketch_down.set_loop(true);
+		anim_sketch_down.set_interval(0.1);
+		anim_sketch_down.set_frame_date(skeleton_sketch_texture, 5, 4, idx_down);
+		anim_sketch_left.set_loop(true);
+		anim_sketch_left.set_interval(0.1);
+		anim_sketch_left.set_frame_date(skeleton_sketch_texture, 5, 4, idx_left);
+		anim_sketch_right.set_loop(true);
+		anim_sketch_right.set_interval(0.1);
+		anim_sketch_right.set_frame_date(skeleton_sketch_texture, 5, 4, idx_right);
 
 		max_hp = skeleton_template.hp;
 		max_speed = skeleton_template.speed;
@@ -58,6 +58,9 @@ public:
 
 		size.x = 48, size.y = 48;
 		hp = max_hp, speed = max_speed;
+
+		// debug
+		name = "Skeleton";
 	}
 	
 	~SkeletonEnemy() = default;

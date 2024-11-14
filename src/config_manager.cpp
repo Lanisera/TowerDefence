@@ -38,7 +38,7 @@ bool ConfigManager::load_level_config(const std::string& path)
 		if (json_wave_interval && json_wave_interval->type == cJSON_Number)
 			wave.interval = json_wave_interval->valuedouble;
 		cJSON* json_wave_spawn_list = cJSON_GetObjectItem(json_wave, "spawn_list");
-		if (json_wave_interval && json_wave_interval->type == cJSON_Array)
+		if (json_wave_spawn_list && json_wave_spawn_list->type == cJSON_Array)
 		{
 			cJSON* json_spawn_event = nullptr;			
 			cJSON_ArrayForEach(json_spawn_event, json_wave_spawn_list)

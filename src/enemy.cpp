@@ -6,6 +6,8 @@
 #include <enemy/enemy.h>
 #include <manager/config_manager.h>
 
+#include <iostream>
+
 Enemy::Enemy()
 {
 	timer_skill.set_one_shot(false);
@@ -29,31 +31,40 @@ void Enemy::on_update(double delta)
 	Vector2 target_distance = position_target - position;
 	position += move_distance < target_distance ? move_distance : target_distance;
 
-	if (target_distance.approx_zero())
+	// if (name != "Slim" && name != "KingSlim")
+		// std::cerr << name << ": move_distance: " << move_distance.length() << ", target_distance: " << target_distance.length() << ", x: " << position.x << ", y: " << position.y << ", t_x: " << position_target.x << ", t_y: " << position_target.y << std::endl;
+
+	if ((position_target - position).approx_zero())
 	{
 		idx_target++;
 		refresh_target_position();
 
 		direction = (position_target - position).normalize();
+
+		// if (name != "Slim" && name != "KingSlim")
+		//	std::cerr << name << ": d_x: " << direction.x << ", d_y: " << direction.y << std::endl;
 	}
 
 	velocity = direction * speed * SIZE_TILE;
 
-	bool is_show_x_anim = abs(velocity.x) > abs(velocity.y);
+	bool is_show_x_anim = abs(direction.x) > abs(direction.y);
+	
+	// if (name != "Slim" && name != "KingSlim")
+	// 	std::cerr << name << ": d_x: " << direction.x << ", d_y: " << direction.y << std::endl;
 
 	if (is_show_sketch)
 	{
 		if (is_show_x_anim)
-			anim_current = velocity.x > 0 ? &anim_sketch_right : &anim_sketch_left;
+			anim_current = direction.x > 0 ? &anim_sketch_right : &anim_sketch_left;
 		else
-			anim_current = velocity.y > 0 ? &anim_sketch_up : &anim_sketch_down;
+			anim_current = direction.y > 0 ? &anim_sketch_down : &anim_sketch_up;
 	}
 	else
 	{
-		if (is_show_sketch)
-			anim_current = velocity.x > 0 ? &anim_right : &anim_left;
+		if (is_show_x_anim)
+			anim_current = direction.x > 0 ? &anim_right : &anim_left;
 		else
-			anim_current = velocity.y > 0 ? &anim_up : & anim_down;
+			anim_current = direction.y > 0 ? &anim_down : & anim_up;
 	}
 
 	anim_current->on_update(delta);
@@ -135,6 +146,8 @@ void Enemy::set_position(Vector2& vec)
 void Enemy::set_route(const Route* route)
 {
 	this->route = route;
+
+	refresh_target_position();
 }
 
 void Enemy::make_invalid()

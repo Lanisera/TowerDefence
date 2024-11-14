@@ -79,7 +79,7 @@ public:
 
 	bool approx_zero() const
 	{
-		return length() < 0.000001;
+		return length() < 0.01;
 	}
 
 public:

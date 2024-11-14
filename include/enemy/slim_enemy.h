@@ -35,18 +35,18 @@ public:
 		anim_right.set_interval(0.1);
 		anim_right.set_frame_date(slim_texture, 6, 4, idx_right);
 
-		anim_up.set_loop(true);
-		anim_up.set_interval(0.1);
-		anim_up.set_frame_date(slim_sketch_texture, 6, 4, idx_up);
-		anim_down.set_loop(true);
-		anim_down.set_interval(0.1);
-		anim_down.set_frame_date(slim_sketch_texture, 6, 4, idx_down);
-		anim_left.set_loop(true);
-		anim_left.set_interval(0.1);
-		anim_left.set_frame_date(slim_sketch_texture, 6, 4, idx_left);
-		anim_right.set_loop(true);
-		anim_right.set_interval(0.1);
-		anim_right.set_frame_date(slim_sketch_texture, 6, 4, idx_right);
+		anim_sketch_up.set_loop(true);
+		anim_sketch_up.set_interval(0.1);
+		anim_sketch_up.set_frame_date(slim_sketch_texture, 6, 4, idx_up);
+		anim_sketch_down.set_loop(true);
+		anim_sketch_down.set_interval(0.1);
+		anim_sketch_down.set_frame_date(slim_sketch_texture, 6, 4, idx_down);
+		anim_sketch_left.set_loop(true);
+		anim_sketch_left.set_interval(0.1);
+		anim_sketch_left.set_frame_date(slim_sketch_texture, 6, 4, idx_left);
+		anim_sketch_right.set_loop(true);
+		anim_sketch_right.set_interval(0.1);
+		anim_sketch_right.set_frame_date(slim_sketch_texture, 6, 4, idx_right);
 
 		max_hp = slim_template.hp;
 		max_speed = slim_template.speed;
@@ -58,6 +58,9 @@ public:
 
 		size.x = 48, size.y = 48;
 		hp = max_hp, speed = max_speed;
+
+		// for debug
+		name = "Slim";
 	}
 	
 	~SlimEnemy() = default;

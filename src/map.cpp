@@ -2,6 +2,7 @@
 #include <stdexcept>
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 
 bool Map::load(const std::string& path)

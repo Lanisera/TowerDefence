@@ -1,4 +1,5 @@
 #include <map/route.h>
+#include <iostream>
 
 
 Route::Route(const TileMap& map, const SDL_Point& idx_origin)
@@ -55,7 +56,7 @@ bool Route::check_duplicate_point(const SDL_Point& target)
 {
 	for (const auto& point : idx_list)
 		if (point.x == target.x && point.y == target.y)
-			return false;
+			return true;
 
-	return true;
+	return false;
 }

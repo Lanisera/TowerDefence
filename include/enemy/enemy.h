@@ -2,6 +2,7 @@
 
 #include <SDL_render.h>
 #include <functional>
+#include <string>
 #include <timer/timer.h>
 #include <vector/vector2.h>
 #include <animation/animation.h>
@@ -54,6 +55,7 @@ public:
 
 	double get_route_progress() const;
 
+
 protected:
 	Vector2 size;
 
@@ -78,6 +80,9 @@ protected:
 	double recover_interval = 0;
 	double recover_range = 0;
 	double recover_intensity = 0;
+
+	// for debug
+	std::string name;
 	
 private:
 	Vector2 position;
@@ -96,7 +101,7 @@ private:
 	SkillCallBack on_skill_released;
 
 	const Route* route = nullptr;
-	int idx_target;
+	int idx_target = 0;
 	Vector2 position_target;
 
 private:

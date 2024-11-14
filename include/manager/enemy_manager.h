@@ -1,5 +1,6 @@
 #pragma once
 
+#include "enemy/enemy_type.h"
 #include "manager/manager.h"
 #include "enemy/enemy.h"
 #include <SDL_render.h>
@@ -14,6 +15,10 @@ public:
 	void on_update(double delta);
 
 	void on_render(SDL_Renderer* renderer);
+
+	void spawn_enemy(EnemyType type, int spawn_point);
+
+	bool check_cleared() const;
 
 protected:
 	EnemyManager() = default;
