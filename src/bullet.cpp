@@ -86,7 +86,7 @@ void Bullet::on_update(double delta)
 			|| position.y - size.y / 2 <= rect_tile_map.y
 			|| position.y + size.y / 2 >= rect_tile_map.y + rect_tile_map.h)
 	{
-		make_invalid();
+		is_valid = false;
 	}
 }
 
