@@ -8,11 +8,16 @@
 #include <manager/game_manager.h>
 #include <manager/config_manager.h>
 #include <manager/resources_manager.h>
+#include "manager/tower_manager.h"
+#include "tower/tower_type.h"
+#include "manager/bullet_manager.h"
 
 #include <iostream>
 
 int GameManager::run(int argc, char **argv)
 {
+	TowerManager::instance()->place_tower(TowerType::Archer, {5, 0});
+
 	Uint64 last_counter = SDL_GetPerformanceCounter();
 	Uint64 counter_freq = SDL_GetPerformanceFrequency();
 
@@ -113,6 +118,8 @@ void GameManager::on_update(double delta)
 		// std::cerr << "enemy update started" << std::endl;
 		EnemyManager::instance()->on_update(delta);
 		// std::cerr << "enemy update finished" << std::endl;
+		TowerManager::instance()->on_update(delta);
+		BulletManager::instance()->on_update(delta);
 	}
 
 }
@@ -126,6 +133,8 @@ void GameManager::on_render()
 	// std::cerr << "enemy renderer started" << std::endl;
 	EnemyManager::instance()->on_render(renderer);
 	// std::cerr << "enemy renderer finished" << std::endl;
+	TowerManager::instance()->on_render(renderer);
+	BulletManager::instance()->on_render(renderer);
 
 	SDL_RenderPresent(renderer);
 }

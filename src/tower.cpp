@@ -218,7 +218,7 @@ void Tower::on_fire()
 	if (is_show_x_anim)
 		facing = direction.x > 0 ? Facing::Right : Facing::Left;
 	else
-		facing = direction.y > 0 ? Facing::Up : Facing::Down;
+		facing = direction.y > 0 ? Facing::Down : Facing::Up;
 
 	update_fire_animation();
 	anim_current->reset();
