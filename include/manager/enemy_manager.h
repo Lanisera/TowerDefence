@@ -20,6 +20,8 @@ public:
 
 	bool check_cleared() const;
 
+	EnemyList& get_enemy_list();
+
 protected:
 	EnemyManager() = default;
 

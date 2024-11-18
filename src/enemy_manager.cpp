@@ -108,6 +108,11 @@ EnemyManager::~EnemyManager()
 		delete enemy;
 }
 
+EnemyManager::EnemyList& EnemyManager::get_enemy_list()
+{
+	return enemy_list;
+}
+
 void EnemyManager::process_home_collision()
 {
 	static const SDL_Point& idx_home = ConfigManager::instance()->map.get_idx_home();
