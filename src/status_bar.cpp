@@ -51,7 +51,7 @@ void StatusBar::on_render(SDL_Renderer* renderer)
 	for (int i = 0; i < (int)HomeManager::instance()->get_current_num_hp(); i++)
 	{
 		rect_dst.x = position.x + 78 + 15 + i * (32 + 2);
-		rect_dst.y = position.x + 78;
+		rect_dst.y = position.y;
 		rect_dst.w = 32, rect_dst.h = 32;
 		SDL_RenderCopy(renderer, tex_heart, nullptr, &rect_dst);
 	}

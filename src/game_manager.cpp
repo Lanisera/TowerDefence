@@ -74,6 +74,8 @@ GameManager::GameManager()
 	init_assert(ResourcesManager::instance()->load_resources_from_file(renderer), u8"游戏基本资源加载失败");
 
 	init_assert(generate_tile_map_texture(), "生成地图纹理失败");
+
+	status_bar.set_position(15, 15);
 }
 
 GameManager::~GameManager()
@@ -112,6 +114,7 @@ void GameManager::on_update(double delta)
 
 	if (!config_instance->is_game_over)
 	{
+		status_bar.on_update(renderer);
 		// std::cerr << "wave update started" << std::endl;
 		WaveManager::instance()->on_update(delta);
 		// std::cerr << "wave update finished" << std::endl;
@@ -122,6 +125,7 @@ void GameManager::on_update(double delta)
 		TowerManager::instance()->on_update(delta);
 		BulletManager::instance()->on_update(delta);
 		CoinManager::instance()->on_update(delta);
+
 	}
 
 }
@@ -138,6 +142,11 @@ void GameManager::on_render()
 	TowerManager::instance()->on_render(renderer);
 	BulletManager::instance()->on_render(renderer);
 	CoinManager::instance()->on_render(renderer);
+
+	if (!config->is_game_over)
+	{
+		status_bar.on_render(renderer);
+	}
 
 	SDL_RenderPresent(renderer);
 }

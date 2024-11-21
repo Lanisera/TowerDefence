@@ -14,6 +14,7 @@
 #include <cjson/cJSON.h>
 
 #include <manager/manager.h>
+#include "ui/status_bar.h"
 
 class GameManager: public Manager<GameManager>
 {
@@ -36,6 +37,8 @@ private:
 	SDL_Renderer *renderer = nullptr; 
 
 	SDL_Texture* tex_tile_map = nullptr;
+
+	StatusBar status_bar;
 
 private:
 	void init_assert(bool flag, const char* err_msg);
