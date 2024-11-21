@@ -193,7 +193,7 @@ void ConfigManager::parse_number_array(double *ary, int max_len, cJSON* json_roo
 
 void ConfigManager::parse_tower_template(TowerTemplate& tpl, cJSON* json_root)
 {
-	if (!json_root || json_root->type == cJSON_Object) return ;
+	if (!json_root || json_root->type != cJSON_Object) return ;
 	
 	cJSON* json_interval = cJSON_GetObjectItem(json_root, "interval");
 	cJSON* json_damage = cJSON_GetObjectItem(json_root, "damage");

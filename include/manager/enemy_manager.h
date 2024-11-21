@@ -37,4 +37,6 @@ private:
 
 	void remove_invalid_enemy();
 
+	void try_spawn_coin_prop(const Vector2& position, double ratio);
+
 };

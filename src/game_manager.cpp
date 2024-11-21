@@ -1,3 +1,4 @@
+#include "manager/coin_manager.h"
 #include "manager/enemy_manager.h"
 #include "manager/wave_manager.h"
 #include "map/tile.h"
@@ -120,6 +121,7 @@ void GameManager::on_update(double delta)
 		// std::cerr << "enemy update finished" << std::endl;
 		TowerManager::instance()->on_update(delta);
 		BulletManager::instance()->on_update(delta);
+		CoinManager::instance()->on_update(delta);
 	}
 
 }
@@ -135,6 +137,7 @@ void GameManager::on_render()
 	// std::cerr << "enemy renderer finished" << std::endl;
 	TowerManager::instance()->on_render(renderer);
 	BulletManager::instance()->on_render(renderer);
+	CoinManager::instance()->on_render(renderer);
 
 	SDL_RenderPresent(renderer);
 }

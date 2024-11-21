@@ -1,6 +1,8 @@
 #include "manager/enemy_manager.h"
 #include "enemy/enemy.h"
 #include "enemy/enemy_type.h"
+#include "manager/bullet_manager.h"
+#include "manager/coin_manager.h"
 #include "manager/config_manager.h"
 #include "manager/home_manager.h"
 #include "map/route.h"
@@ -143,6 +145,53 @@ void EnemyManager::process_home_collision()
 
 void EnemyManager::process_bullet_collision()
 {
+	static BulletManager::BulletList& bullet_list =
+		BulletManager::instance()->get_bullet_list();
+
+	for (auto enemy : enemy_list)
+	{
+		if (enemy->can_remove()) continue;
+
+		const Vector2& enemy_pos = enemy->get_position();
+		const Vector2& enemy_size = enemy->get_size();
+
+		for (auto bullet : bullet_list)
+		{
+			if (!bullet->can_collision()) continue;
+
+			const Vector2& bullet_pos = bullet->get_position();
+			if (bullet_pos.x >= enemy_pos.x - enemy_size.x / 2 &&
+					bullet_pos.x <= enemy_pos.x + enemy_size.x / 2 &&
+					bullet_pos.y >= enemy_pos.y - enemy_size.y / 2 &&
+					bullet_pos.y <= enemy_pos.y + enemy_size.y / 2)
+			{
+				double damage = bullet->get_damage();
+				double damage_range = bullet->get_damage_range();
+
+				if (damage_range < 0)
+				{
+					enemy->decrease_hp(damage);
+					if (enemy->can_remove())
+						try_spawn_coin_prop(enemy_pos, enemy->get_reward_ratio());
+				}
+				else
+				{
+					for (auto target_enemy : enemy_list)
+					{
+						const Vector2& target_enemy_pos = target_enemy->get_position();
+						if ((target_enemy_pos - bullet_pos).length() <= damage_range)
+						{
+							target_enemy->decrease_hp(damage);
+							if (target_enemy->can_remove())
+								try_spawn_coin_prop(target_enemy_pos, target_enemy->get_reward_ratio());
+						}
+					}
+				}
+
+				bullet->on_collide(enemy);
+			}
+		}
+	}
 
 }
 
@@ -153,4 +202,14 @@ void EnemyManager::remove_invalid_enemy()
 					if (deletebale) delete enemy;
 					return deletebale;
 				}), enemy_list.end());
+}
+
+void EnemyManager::try_spawn_coin_prop(const Vector2& position, double ratio)
+{
+	static CoinManager* instance = CoinManager::instance();
+
+	if ((double)(rand() % 100) / 100 <= ratio)
+	{
+		instance->spawn_coin_prop(position);
+	}
 }
