@@ -1,6 +1,7 @@
 #include "ui/status_bar.h"
 #include "manager/coin_manager.h"
 #include "manager/home_manager.h"
+#include "manager/player_manager.h"
 #include "manager/resources_manager.h"
 #include <SDL2_gfxPrimitives.h>
 #include <SDL_render.h>
@@ -84,6 +85,7 @@ void StatusBar::on_render(SDL_Renderer* renderer)
 	rect_dst.y += width_border_mp_bar;
 	rect_dst.w = width_mp_bar - 2 * width_border_mp_bar;
 	rect_dst.h = height_mp_bar - 2 * width_border_mp_bar;
-	roundedBoxRGBA(renderer, rect_dst.x, rect_dst.y, rect_dst.x + rect_dst.w, rect_dst.y + rect_dst.h, 2,
+	double process = PlayerManager::instance()->get_current_mp() / 100;
+	roundedBoxRGBA(renderer, rect_dst.x, rect_dst.y, rect_dst.x + (int)(rect_dst.w * process), rect_dst.y + rect_dst.h, 2,
 		color_mp_bar_foreground.r, color_mp_bar_foreground.g, color_mp_bar_foreground.b, color_mp_bar_foreground.a);
 }

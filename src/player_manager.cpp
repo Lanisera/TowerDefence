@@ -86,10 +86,10 @@ void PlayerManager::on_update(double delta)
 		if (position.y < rect_map.y) position.y = rect_map.y;
 		if (position.y > rect_map.y + rect_map.h) position.y = rect_map.y + rect_map.h; 
 
-		if (position.y < 0) facing = Facing::Up;
-		if (position.y > 0) facing = Facing::Down;
-		if (position.x < 0) facing = Facing::Left;
-		if (position.x > 0) facing = Facing::Right;
+		if (direction.y < 0) facing = Facing::Up;
+		if (direction.y > 0) facing = Facing::Down;
+		if (direction.x < 0) facing = Facing::Left;
+		if (direction.x > 0) facing = Facing::Right;
 
 		switch (facing)
 		{
@@ -174,13 +174,16 @@ void PlayerManager::on_update(double delta)
 
 	for (auto coin_prop : coin_prop_list)
 	{
+		if (coin_prop->can_remove()) continue;
+
 		const Vector2 pos = coin_prop->get_position();
-		if (pos.x >= position.x 
-				&& pos.x <= position.x + size.x
-				&& pos.y >= position.y
-				&& pos.y <= position.y + size.y)
+		if (pos.x >= position.x - size.x / 2
+				&& pos.x <= position.x + size.x / 2
+				&& pos.y >= position.y - size.y / 2
+				&& pos.y <= position.y + size.y / 2)
 		{
 			CoinManager::instance()->increase_coin(10);
+			coin_prop->make_invalid();
 
 			Mix_PlayChannel(-1, sound_pool.find(ResID::Sound_Coin)->second, 0);
 		}
@@ -223,7 +226,7 @@ PlayerManager::PlayerManager()
 	timer_auto_increase_mp.set_on_timeout([&]()
 			{
 				double interval = ConfigManager::instance()->player_template.skill_interval;
-				mp += std::min((int)(mp + 100 / (interval / 0.1)), 100);
+				mp = std::min((int)(mp + 100 / (interval / 0.1)), 100);
 			});
 
 	timer_release_flash_cd.set_one_shot(true);

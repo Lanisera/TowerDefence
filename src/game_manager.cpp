@@ -16,6 +16,7 @@
 #include "manager/bullet_manager.h"
 #include "ui/place_panel.h"
 #include "ui/upgrade_panel.h"
+#include "manager/player_manager.h"
 
 #include <iostream>
 
@@ -146,6 +147,7 @@ void GameManager::on_input()
 	{
 		place_panel->on_input(event);
 		upgrade_panel->on_input(event);
+		PlayerManager::instance()->on_input(event);
 	}
 
 }
@@ -164,7 +166,7 @@ void GameManager::on_update(double delta)
 		TowerManager::instance()->on_update(delta);
 		BulletManager::instance()->on_update(delta);
 		CoinManager::instance()->on_update(delta);
-
+		PlayerManager::instance()->on_update(delta);
 	}
 
 }
@@ -181,6 +183,7 @@ void GameManager::on_render()
 	TowerManager::instance()->on_render(renderer);
 	BulletManager::instance()->on_render(renderer);
 	CoinManager::instance()->on_render(renderer);
+	PlayerManager::instance()->on_render(renderer);
 
 	if (!config->is_game_over)
 	{
