@@ -25,6 +25,10 @@ public:
 
 	const Vector2& get_position() const;
 
+public:
+	// for debug
+	std::string name = "empty";
+
 protected:
 	Vector2 size;
 

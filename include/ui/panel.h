@@ -13,9 +13,9 @@ public:
 
 	void show();
 
-	void set_idx_tile(const SDL_Rect& idx);
+	void set_idx_tile(const SDL_Point& idx);
 
-	void set_center_pos(const SDL_Rect& pos);
+	void set_center_pos(const SDL_Point& pos);
 
 	void on_input(const SDL_Event& event);
 

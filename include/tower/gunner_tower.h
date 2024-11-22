@@ -40,6 +40,7 @@ public:
 
 		size.x = 48, size.y = 48;
 
+		name = "gunner";
 	}
 
 	~GunnerTower();

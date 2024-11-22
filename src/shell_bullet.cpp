@@ -3,6 +3,7 @@
 #include "manager/resources_manager.h"
 #include <SDL_mixer.h>
 #include <SDL_render.h>
+#include <iostream>
 
 ShellBullet::ShellBullet()
 {
@@ -21,10 +22,10 @@ ShellBullet::ShellBullet()
 	size.x = 48, size.y = 48;
 
 	//init for explode shell
-	animation.set_loop(false);
-	animation.set_interval(0.1);
-	animation.set_frame_date(explode_tex_shell, 5, 1, explode_idx_list);
-	animation.set_on_finished(
+	explode_animation.set_loop(false);
+	explode_animation.set_interval(0.1);
+	explode_animation.set_frame_date(explode_tex_shell, 5, 1, explode_idx_list);
+	explode_animation.set_on_finished(
 			[&]()
 			{
 				make_invalid();
@@ -67,8 +68,8 @@ void ShellBullet::on_render(SDL_Renderer* renderer)
 	
 	static SDL_Point point;
 
-	point.x = (int)(position.x - explode_size.x/2);
-	point.y = (int)(position.y - explode_size.y/2);
+	point.x = (int)(position.x - explode_size.x / 2);
+	point.y = (int)(position.y - explode_size.y / 2);
 	
 	explode_animation.on_render(renderer, point);
 

@@ -4,6 +4,7 @@
 #include <SDL_hints.h>
 #include <SDL_messagebox.h>
 #include <SDL_mixer.h>
+#include <SDL_rect.h>
 #include <SDL_render.h>
 #include <SDL.h>
 #include <SDL_timer.h>
@@ -15,6 +16,7 @@
 
 #include <manager/manager.h>
 #include "ui/status_bar.h"
+#include "ui/panel.h"
 
 class GameManager: public Manager<GameManager>
 {
@@ -40,6 +42,9 @@ private:
 
 	StatusBar status_bar;
 
+	Panel* place_panel = nullptr;
+	Panel* upgrade_panel = nullptr;
+
 private:
 	void init_assert(bool flag, const char* err_msg);
 
@@ -50,4 +55,13 @@ private:
 	void on_render();
 
 	bool generate_tile_map_texture();
+
+	bool check_home(const SDL_Point& idx_tile_selected);
+
+	bool get_cursor_idx_tile(SDL_Point& idx_tile_selected, int screen_x, int screen_y);
+
+	void get_selected_tile_center_pos(SDL_Point& center_pos, const SDL_Point& idx_tile_selected);
+
+	bool can_place_tower(const SDL_Point& idx_tile_selected);
+	
 };

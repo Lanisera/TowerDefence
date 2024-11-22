@@ -3,15 +3,19 @@
 #include "manager/wave_manager.h"
 #include "map/tile.h"
 #include <SDL_blendmode.h>
+#include <SDL_events.h>
 #include <SDL_pixels.h>
 #include <SDL_rect.h>
 #include <SDL_render.h>
+#include <algorithm>
 #include <manager/game_manager.h>
 #include <manager/config_manager.h>
 #include <manager/resources_manager.h>
 #include "manager/tower_manager.h"
 #include "tower/tower_type.h"
 #include "manager/bullet_manager.h"
+#include "ui/place_panel.h"
+#include "ui/upgrade_panel.h"
 
 #include <iostream>
 
@@ -76,6 +80,9 @@ GameManager::GameManager()
 	init_assert(generate_tile_map_texture(), "生成地图纹理失败");
 
 	status_bar.set_position(15, 15);
+
+	place_panel = new PlacePanel();
+	upgrade_panel = new UpgradePanel();
 }
 
 GameManager::~GameManager()
@@ -101,9 +108,44 @@ void GameManager::init_assert(bool flag, const char* err_msg)
 
 void GameManager::on_input()
 {
-	if (event.type == SDL_QUIT)
+	static ConfigManager* instance = ConfigManager::instance();
+
+	static SDL_Point center_pos;
+	static SDL_Point idx_tile_selected;
+
+	switch (event.type)
 	{
+	case SDL_QUIT:
 		is_quit = true;
+		break;
+	case SDL_MOUSEBUTTONDOWN:
+		if (instance->is_game_over)
+			break;
+		if (get_cursor_idx_tile(idx_tile_selected, event.motion.x, event.motion.y))
+		{
+			get_selected_tile_center_pos(center_pos, idx_tile_selected);
+			if (check_home(idx_tile_selected))
+			{
+				upgrade_panel->set_idx_tile(idx_tile_selected);
+				upgrade_panel->set_center_pos(center_pos);
+				upgrade_panel->show();
+			}
+			else if (can_place_tower(idx_tile_selected))
+			{
+				place_panel->set_idx_tile(idx_tile_selected);
+				place_panel->set_center_pos(center_pos);
+				place_panel->show();
+			}
+		}
+		break;
+	default:
+		break;
+	}
+
+	if (!instance->is_game_over)
+	{
+		place_panel->on_input(event);
+		upgrade_panel->on_input(event);
 	}
 
 }
@@ -115,13 +157,10 @@ void GameManager::on_update(double delta)
 	if (!config_instance->is_game_over)
 	{
 		status_bar.on_update(renderer);
-		// std::cerr << "wave update started" << std::endl;
+		place_panel->on_update(renderer);
+		upgrade_panel->on_update(renderer);
 		WaveManager::instance()->on_update(delta);
-		// std::cerr << "wave update finished" << std::endl;
-
-		// std::cerr << "enemy update started" << std::endl;
 		EnemyManager::instance()->on_update(delta);
-		// std::cerr << "enemy update finished" << std::endl;
 		TowerManager::instance()->on_update(delta);
 		BulletManager::instance()->on_update(delta);
 		CoinManager::instance()->on_update(delta);
@@ -145,6 +184,8 @@ void GameManager::on_render()
 
 	if (!config->is_game_over)
 	{
+		place_panel->on_render(renderer);
+		upgrade_panel->on_render(renderer);
 		status_bar.on_render(renderer);
 	}
 
@@ -221,7 +262,45 @@ bool GameManager::generate_tile_map_texture()
 
 	SDL_SetRenderTarget(renderer, nullptr);
 
+	return true;
+}
 
+bool GameManager::check_home(const SDL_Point& idx_tile_selected)
+{
+	static const Map& map = ConfigManager::instance()->map;
+	static const SDL_Point& idx_home = map.get_idx_home();
+
+	return idx_home.x == idx_tile_selected.x && idx_home.y == idx_tile_selected.y;
+}
+
+bool GameManager::get_cursor_idx_tile(SDL_Point& idx_tile_selected, int screen_x, int screen_y)
+{
+	static const Map& map = ConfigManager::instance()->map;
+	static const SDL_Rect& rect_tile_map = ConfigManager::instance()->rect_tile_map;
+
+	if (screen_x < rect_tile_map.x || screen_x > rect_tile_map.x + rect_tile_map.w
+			|| screen_y < rect_tile_map.y || screen_y > rect_tile_map.y + rect_tile_map.h)
+		return false;
+
+	idx_tile_selected.x = std::min((screen_x - rect_tile_map.x) / SIZE_TILE, (int)map.get_width() - 1);
+	idx_tile_selected.y = std::min((screen_y - rect_tile_map.y) / SIZE_TILE, (int)map.get_height() - 1);
 
 	return true;
 }
+
+void GameManager::get_selected_tile_center_pos(SDL_Point& center_pos, const SDL_Point& idx_tile_selected)
+{
+	static const SDL_Rect& rect_tile_map = ConfigManager::instance()->rect_tile_map;
+
+	center_pos.x = rect_tile_map.x +  idx_tile_selected.x * SIZE_TILE + SIZE_TILE / 2;
+	center_pos.y = rect_tile_map.y +  idx_tile_selected.y * SIZE_TILE + SIZE_TILE / 2;
+}
+
+bool GameManager::can_place_tower(const SDL_Point& idx_tile_selected)
+{
+	static const TileMap& tile_map = ConfigManager::instance()->map.get_tile_map();
+	const Tile& tile = tile_map[idx_tile_selected.y][idx_tile_selected.x];
+
+	return tile.decoration < 0 && tile.direction == Tile::Direction::None && !tile.has_tower;
+}
+

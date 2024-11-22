@@ -24,12 +24,12 @@ void Panel::show()
 	visible = true;
 }
 
-void Panel::set_idx_tile(const SDL_Rect& idx)
+void Panel::set_idx_tile(const SDL_Point& idx)
 {
 	idx_tile_selected = idx;
 }
 
-void Panel::set_center_pos(const SDL_Rect& pos)
+void Panel::set_center_pos(const SDL_Point& pos)
 {
 	center_pos = pos;
 }
