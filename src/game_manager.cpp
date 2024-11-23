@@ -4,16 +4,18 @@
 #include "map/tile.h"
 #include <SDL_blendmode.h>
 #include <SDL_events.h>
+#include <SDL_mixer.h>
 #include <SDL_pixels.h>
 #include <SDL_rect.h>
 #include <SDL_render.h>
+#include <SDL_video.h>
 #include <algorithm>
 #include <manager/game_manager.h>
 #include <manager/config_manager.h>
 #include <manager/resources_manager.h>
 #include "manager/tower_manager.h"
-#include "tower/tower_type.h"
 #include "manager/bullet_manager.h"
+#include "ui/banner.h"
 #include "ui/place_panel.h"
 #include "ui/upgrade_panel.h"
 #include "manager/player_manager.h"
@@ -22,7 +24,7 @@
 
 int GameManager::run(int argc, char **argv)
 {
-	TowerManager::instance()->place_tower(TowerType::Archer, {5, 0});
+	Mix_FadeInMusic(ResourcesManager::instance()->get_music_pool().find(ResID::Music_BGM)->second, -1, 1500);
 
 	Uint64 last_counter = SDL_GetPerformanceCounter();
 	Uint64 counter_freq = SDL_GetPerformanceFrequency();
@@ -82,6 +84,7 @@ GameManager::GameManager()
 
 	status_bar.set_position(15, 15);
 
+	banner = new Banner();
 	place_panel = new PlacePanel();
 	upgrade_panel = new UpgradePanel();
 }
@@ -154,6 +157,7 @@ void GameManager::on_input()
 
 void GameManager::on_update(double delta)
 {
+	static bool is_game_over_last_tick = false;
 	static ConfigManager* config_instance = ConfigManager::instance();
 
 	if (!config_instance->is_game_over)
@@ -167,7 +171,22 @@ void GameManager::on_update(double delta)
 		BulletManager::instance()->on_update(delta);
 		CoinManager::instance()->on_update(delta);
 		PlayerManager::instance()->on_update(delta);
+
+		return ;
 	}
+
+	if (!is_game_over_last_tick && config_instance->is_game_over)
+	{
+		static const ResourcesManager::SoundPool& sound_pool = ResourcesManager::instance()->get_sound_pool();
+		Mix_FadeOutMusic(1500);
+		Mix_PlayChannel(-1, sound_pool.find(config_instance->is_game_over ? ResID::Sound_Win : ResID::Sound_Loss)->second, 0);
+	}
+
+	is_game_over_last_tick = config_instance->is_game_over;
+
+	banner->on_update(delta);
+	if (banner->check_end_display())
+		is_quit = true;
 
 }
 
@@ -190,6 +209,13 @@ void GameManager::on_render()
 		place_panel->on_render(renderer);
 		upgrade_panel->on_render(renderer);
 		status_bar.on_render(renderer);
+	}
+	else
+	{
+		int width_screen, height_screen;
+		SDL_GetWindowSizeInPixels(window, &width_screen, &height_screen);
+		banner->set_center_position({(double)width_screen / 2, (double)height_screen / 2});
+		banner->on_render(renderer);
 	}
 
 	SDL_RenderPresent(renderer);

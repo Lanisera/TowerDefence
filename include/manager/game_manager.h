@@ -17,6 +17,7 @@
 #include <manager/manager.h>
 #include "ui/status_bar.h"
 #include "ui/panel.h"
+#include "ui/banner.h"
 
 class GameManager: public Manager<GameManager>
 {
@@ -44,6 +45,8 @@ private:
 
 	Panel* place_panel = nullptr;
 	Panel* upgrade_panel = nullptr;
+
+	Banner* banner = nullptr;
 
 private:
 	void init_assert(bool flag, const char* err_msg);
